@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 function App() {
+  // using a checkbox to look at useState
   const [checked, setChecked] = useState(false);
 
   return (
@@ -11,7 +12,7 @@ function App() {
       <input
         type="checkbox"
         value={checked}
-        onChange={() => setChecked((checked)=> !checked)}
+        onChange={() => setChecked((checked) => !checked)}
       ></input>
       <p>{checked ? 'checked' : 'not checked'}</p>
     </div>
