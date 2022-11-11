@@ -1,22 +1,30 @@
-import React, { createContext, useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import React from 'react';
+import { useFetch } from './useFetch';
 
-const TreesContext = createContext();
-
-export const useTrees = () => useContext(TreesContext);
-
-const trees = [
-  { id: '1', type: 'Maple' },
-  { id: '2', type: 'Spruce' },
-  { id: '3', type: 'Willow' },
-  { id: '4', type: 'Whipple' },
-];
+function App({ login }) {
+  const { loading, data, error } = useFetch(
+    `https://api.github.com/users/${login}`
+  );
+  if (loading) return <h1>Loading</h1>;
+  if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
+  // return (
+  //   <div>
+  //     <pre>{JSON.stringify(data, null, 2)}</pre>
+  //   </div>
+  // );
+  return (
+    <div>
+      <img src={data.avatar_url} alt={data.log} />
+      <div>
+        <h1>{data.login}</h1>
+        {data.name && <p>{data.name}</p>}
+        {data.location && <p>{data.location}</p>}
+      </div>
+    </div>
+  );
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <TreesContext.Provider value={{ trees }}>
-    <App />
-  </TreesContext.Provider>
-);
+root.render(<App login="d-whipp" />);
