@@ -28,3 +28,7 @@ function App({ login }) {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App login="d-whipp" />);
+
+// Libraries that use Hooks
+// React Router, Relay, Apollo...
+// https://usehooks.com to help develop hooks
