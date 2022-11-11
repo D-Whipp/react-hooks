@@ -1,31 +1,34 @@
-import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { useInput } from './useInput';
+import React from 'react';
+import { useFetch } from './useFetch';
 
-// you can handle form inputs with
-// controlled components
-// means you handle form inputs using
-// state variables
-function App() {
-  const [titleProps, resetTitle] = useInput('');
-  const [colorProps, resetColor] = useInput('#000');
-
-  const submit = (e) => {
-    e.preventDefault();
-    alert(`${titleProps.value} sounds like ${colorProps.value}`);
-    resetTitle('');
-    resetColor('#000');
-  };
-
+function App({ login }) {
+  const { loading, data, error } = useFetch(
+    `https://api.github.com/users/${login}`
+  );
+  if (loading) return <h1>Loading</h1>;
+  if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
+  // return (
+  //   <div>
+  //     <pre>{JSON.stringify(data, null, 2)}</pre>
+  //   </div>
+  // );
   return (
-    <form onSubmit={submit}>
-      <input {...titleProps} type="text" placeholder="Sound..." />
-      <input {...colorProps} type="color" />
-      <button>ADD</button>
-    </form>
+    <div>
+      <img src={data.avatar_url} alt={data.log} />
+      <div>
+        <h1>{data.login}</h1>
+        {data.name && <p>{data.name}</p>}
+        {data.location && <p>{data.location}</p>}
+      </div>
+    </div>
   );
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(<App login="d-whipp" />);
+
+// Libraries that use Hooks
+// React Router, Relay, Apollo...
+// https://usehooks.com to help develop hooks
